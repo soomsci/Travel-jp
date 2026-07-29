@@ -128,6 +128,9 @@ section.on{display:block}
 .alert{margin-top:7px;font-size:12px;background:color-mix(in srgb,var(--warn) 13%,transparent);
   border-left:2.5px solid var(--warn);border-radius:0 7px 7px 0;padding:6px 9px;color:var(--tx)}
 .alert.d{background:color-mix(in srgb,var(--danger) 13%,transparent);border-color:var(--danger)}
+.park{margin-top:7px;font-size:11.5px;color:var(--tx2);background:var(--card2);
+  border:1px solid var(--line);border-radius:7px;padding:5px 9px;display:inline-block}
+.park.free{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 35%,transparent);font-weight:700}
 .btn{display:inline-flex;align-items:center;gap:4px;margin-top:9px;background:var(--card2);
   border:1px solid var(--line);border-radius:9px;padding:6px 11px;font-size:12px;font-weight:700;
   color:var(--acc);cursor:pointer;font-family:inherit}
@@ -436,6 +439,41 @@ svg.routemap{width:100%;height:auto;display:block;border-radius:7px}
     <div class="alert">고속도로에서 나오는 <b>苅田北九州空港IC 바로 앞</b>이라 4일차 동선에 그대로 걸립니다. IC로 내려와서 주유하고 공항 연락도로로 들어가면 됩니다.</div>
   </div>
 
+  <div class="h2">주차</div>
+  <div class="card">
+    <div style="font-weight:800;font-size:13px;color:var(--ok);margin-bottom:6px">무료로 댈 수 있는 곳</div>
+    <table><tbody>
+      <tr><td>유메오츠리바시</td><td class="muted" style="font-size:11.5px">中村측 229대 · 北方측 46대</td></tr>
+      <tr><td>히타 마메다마치</td><td class="muted" style="font-size:11.5px">주차장 전부 무료 · 豆田西 50대</td></tr>
+      <tr><td>조자바루 · 타데와라</td><td class="muted" style="font-size:11.5px">비지터센터 주차장</td></tr>
+      <tr><td>사기리다이</td><td class="muted" style="font-size:11.5px">전망대 앞, 소규모</td></tr>
+      <tr><td>A-Coop 유후인</td><td class="muted" style="font-size:11.5px">마트 이용 시</td></tr>
+      <tr><td>숙소 3곳</td><td class="muted" style="font-size:11.5px">유라리·喜安屋 무료 / 다이와는 유료</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:800;font-size:13px;color:var(--warn);margin-bottom:6px">돈 내는 곳</div>
+    <div class="kv"><span>가라토시장<br><span class="tiny">572대</span></span>
+      <b>1시간 무료<br><span class="muted" style="font-weight:400">이후 30분 ¥120</span></b></div>
+    <div class="kv"><span>모지코 레트로</span>
+      <b>해협플라자 60분 ¥500<br><span class="muted" style="font-weight:400">도보 5분 밖 최대 ¥500~800</span></b></div>
+    <div class="kv"><span>다이와 로이넷</span><b>호텔 주차 유료</b></div>
+    <div class="alert">가라토시장은 <b>최대요금 설정이 없습니다.</b> 1시간을 넘기면 입차 시각부터 계산되니, 계획대로 1시간 반 머무르면 ¥240쯤 나옵니다.
+    <b>공휴일엔 입·출차 줄이 깁니다</b> — 만차면 도보 5분 거리 第一パーク(12시간 ¥500)로 돌리세요.</div>
+    <div class="alert">모지코는 주말·공휴일 <b>10시 넘으면 중심부가 만차</b>입니다. 항구 바로 앞은 하루 ¥1,500~2,000이라 비싸니, 조금 걸어서 대는 게 낫습니다.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--ok)">
+    <div style="font-weight:800;font-size:13px">💡 주차비를 아끼는 방법</div>
+    <div class="muted" style="font-size:12.5px;margin-top:5px">
+      <b>고쿠라와 유후인에서는 차를 숙소에 두고 걸으세요.</b><br>
+      · 1일차 저녁 — 다이와 로이넷에서 후쿠스케·타츠보까지 전부 도보 3분<br>
+      · 2~3일차 — 유라리 로쿠묘에서 긴린코·유노쓰보 거리까지 도보 12분<br>
+      두 곳 다 관광지 한복판이라 주차비가 비싼데, 걸어다니면 한 푼도 안 듭니다.
+    </div>
+  </div>
+
   <div class="h2">사고·고장</div>
   <div class="card">
     <div class="kv"><span>경찰</span><a class="tel" href="tel:110">110</a></div>
@@ -633,7 +671,7 @@ const DAYS = [
       ds:'도착하면 <b>093-474-5777</b>로 전화하세요. 터미널 정면 현관을 나와 횡단보도 하나 건너 <b>왼쪽 「乗降場」</b>에서 셔틀을 기다리면 됩니다.',
       alert:'요금 <b>¥18,400은 현지 결제</b>입니다 (현금 또는 카드). 인수할 때 <b>외관 흠집 4방향 사진</b>, ETC 카드 인식, 연료 게이지를 꼭 확인하세요.'},
     {drive:{dist:'35km', dur:'40분', toll:'약 ¥700', road:'東九州道 苅田北九州空港IC → 小倉東IC', note:'국도 10호로 가면 무료 · 50분'}},
-    {t:'19:10', type:'h', nm:'다이와 로이넷 호텔 고쿠라 에키마에', c:P.daiwa,
+    {t:'19:10', type:'h', nm:'다이와 로이넷 호텔 고쿠라 에키마에', c:P.daiwa, park:{t:'호텔 주차장 · 유료 (체크인 때 요금 확인)'},
       ds:'스탠다드 더블 · 금연. 숙박비 ₩103,437은 결제 완료. ☎ 093-513-7580',
       tags:[['o','1박'],['a','예약 ••••••']],
       alert:'호텔이 <b>우오마치(魚町)</b>에 있습니다 — 저장해두신 야키니쿠집들이 전부 같은 블록이라 걸어서 갑니다. 주차는 별도 요금인 경우가 많으니 체크인 때 확인하세요.'},
@@ -653,22 +691,22 @@ const DAYS = [
     {t:'07:30', type:'m', nm:'조식은 가볍게', ds:'시장에서 스시를 제대로 드시려면 배를 비워두는 게 낫습니다.'},
     {t:'10:00', type:'h', nm:'다이와 로이넷 체크아웃', c:P.daiwa},
     {drive:{dist:'20km', dur:'35분', toll:'¥230 (현금)', road:'국도 199호 → 관문국도터널', note:'⚠️ 관문터널은 ETC 불가 — 현금만 받습니다'}},
-    {t:'10:40', type:'p', nm:'가라토시장 (唐戸市場)', ds:'스시 이벤트 「活きいき馬関街」— 공휴일이라 8:00부터 엽니다. 15:00 마감.', c:P.karato,
+    {t:'10:40', type:'p', nm:'가라토시장 (唐戸市場)', park:{t:'시장 주차장 572대 · 1시간 무료, 초과 시 30분 ¥120'}, ds:'스시 이벤트 「活きいき馬関街」— 공휴일이라 8:00부터 엽니다. 15:00 마감.', c:P.karato,
       tags:[['o','오늘 열림'],['w','공휴일 혼잡']],
       alert:'먹을 자리부터 찾지 마시고 <b>스시부터 사세요.</b> 우니·대뱃살 같은 인기 네타는 12시 전에 빠집니다. 주차는 옆 카모완프 주차장이 회전이 빠릅니다.'},
     {t:'11:30', type:'m', nm:'카모완프 (カモンワーフ)', ds:'시장 바로 옆. 바다 보이는 데크에서 사온 스시를 먹습니다.', c:P.kamon},
     {drive:{dist:'6km', dur:'15분', toll:'¥230 (현금)', road:'관문국도터널 복귀', note:'고속(관몬바시)으로 가면 ETC 가능하지만 ¥410'}},
-    {t:'12:15', type:'p', nm:'모지코 레트로 (門司港レトロ)', ds:'구 모지세관, 블루윙 모지 도개교. 항구 산책 1시간이면 충분합니다.', c:P.moji,
+    {t:'12:15', type:'p', nm:'모지코 레트로 (門司港レトロ)', park:{t:'해협플라자 60분 ¥500 · 도보 5분 밖은 최대 ¥500~800'}, ds:'구 모지세관, 블루윙 모지 도개교. 항구 산책 1시간이면 충분합니다.', c:P.moji,
       tags:[['o','식사권 있음']],
       alert:'렌트카 예약에 <b>門司港地ビール工房 식사권</b>이 무료로 딸려 있습니다. 여기서 쓰세요 — 다만 <b>운전하셔야 하니 맥주는 안 됩니다.</b> 영업일은 미리 확인하시고, 가라토에서 스시를 배부르게 드셨다면 가볍게만 쓰세요.'},
     {drive:{dist:'130km', dur:'2시간 5분', toll:'약 ¥3,600', road:'東九州道 → 宇佐別府道路 → 大分道 湯布院IC', note:'오늘 이동 중 제일 긴 구간'}},
-    {t:'15:20', type:'h', nm:'湯らり六妙 (유라리 로쿠묘)', ds:'히노키 내탕 딸린 별채 (거실 6조 + 일본식 방 10조). 숙박비는 카드로 이미 결제됐습니다. ☎ 0977-85-2200',
+    {t:'15:20', type:'h', nm:'湯らり六妙 (유라리 로쿠묘)', park:{f:1,t:'숙소 주차장 — 여기 대고 유후인은 걸어다니세요'}, ds:'히노키 내탕 딸린 별채 (거실 6조 + 일본식 방 10조). 숙박비는 카드로 이미 결제됐습니다. ☎ 0977-85-2200',
       q:'湯らり六妙 由布院', tags:[['o','1박'],['a','체크인 15:00~21:00']],
       alert:'<b>식사가 안 나오는 숙소입니다</b> (룸 온리). 전자레인지가 있어서 마트 음식 데워 먹기 좋습니다 — 내일 아침거리까지 같이 사두세요. 현장에서 낼 <b>입탕세 ¥250은 카드가 안 되니 현금</b>으로 준비하세요.'},
-    {t:'16:00', t2:'17:30', type:'p', nm:'긴린코 + 유노쓰보 거리', ds:'유후인 대표 산책 코스. 호수 한 바퀴 20분.', c:P.kinrin,
+    {t:'16:00', t2:'17:30', type:'p', nm:'긴린코 + 유노쓰보 거리', park:{f:1,t:'숙소에 차 두고 도보 12분'}, ds:'유후인 대표 산책 코스. 호수 한 바퀴 20분.', c:P.kinrin,
       tags:[['d','17:30 마감']],
       alert:'상점가는 <b>17:00~17:30에 대부분 닫습니다.</b> 쇼핑하실 거면 이 시간에 몰아서 하세요.'},
-    {t:'18:00', type:'p', nm:'A-Coop 유후인점에서 장보기', ds:'오늘 저녁 + 내일 아침거리까지. 20:00쯤 닫습니다.',
+    {t:'18:00', type:'p', nm:'A-Coop 유후인점에서 장보기', park:{f:1,t:'마트 주차장 무료'}, ds:'오늘 저녁 + 내일 아침거리까지. 20:00쯤 닫습니다.',
       q:'Aコープ湯布院店', tags:[['w','20:00 마감'],['d','아침거리도!']],
       alert:'숙소에 조식이 없습니다. <b>내일 아침 먹을 것도 여기서 사세요.</b> 방에 전자레인지가 있습니다.'},
     {t:'19:00', type:'h', nm:'객실 노천온천 + 저녁'}
@@ -678,16 +716,16 @@ const DAYS = [
     items:[
     {t:'08:00', type:'m', nm:'객실에서 아침', ds:'어제 마트에서 사둔 것으로. 조식 제공이 없는 숙소입니다.'},
     {t:'10:00', type:'h', nm:'湯らり六妙 체크아웃', ds:'체크아웃 10:00.', q:'湯らり六妙 由布院'},
-    {t:'10:00', t2:'11:15', type:'p', nm:'유후인 카페거리', ds:'전날 못 본 상점·카페를 아침에 여유롭게. 오전이 훨씬 덜 붐빕니다.', c:P.yunotsubo},
+    {t:'10:00', t2:'11:15', type:'p', nm:'유후인 카페거리', park:{f:1,t:'숙소에 차 두고 도보'}, ds:'전날 못 본 상점·카페를 아침에 여유롭게. 오전이 훨씬 덜 붐빕니다.', c:P.yunotsubo},
     {t:'11:30', t2:'12:40', type:'m', nm:'후쇼안 (不生庵) 점심', ds:'산소 무라타에서 하는 소바집. 유후인 전경이 보입니다. 예약 안 받고 웨이팅.',
       q:'不生庵 由布院', tags:[['d','수요일 휴무 확인']],
       alert:'소바집은 <b>수요일 정기휴무</b>가 흔합니다. 8/12이 수요일이니 가시기 전에 꼭 확인하세요. 안 열면 유후인 시내 향토요리로 대체.', alertD:1},
     {drive:{dist:'6km', dur:'10분', toll:'무료', road:'현도 11호'}},
-    {t:'12:50', type:'p', nm:'사기리다이 (狭霧台) 전망대', ds:'유후인 분지가 한눈에. 차 세우고 5분이면 되는데 사진은 여기가 제일 잘 나옵니다.', c:P.sagiri, tags:[['a','추천']]},
+    {t:'12:50', type:'p', nm:'사기리다이 (狭霧台) 전망대', park:{f:1,t:'전망대 무료 주차 · 소규모라 만차면 잠깐 대기'}, ds:'유후인 분지가 한눈에. 차 세우고 5분이면 되는데 사진은 여기가 제일 잘 나옵니다.', c:P.sagiri, tags:[['a','추천']]},
     {drive:{dist:'25km', dur:'30분', toll:'무료', road:'야마나미 하이웨이 (현도 11호)', note:'구주 연산을 끼고 도는 드라이브 구간'}},
-    {t:'13:40', t2:'14:30', type:'p', nm:'타데와라 습원 / 조자바루', ds:'나무 데크 산책. 해발 1,000m라 아래보다 시원합니다.', c:P.tadewara},
+    {t:'13:40', t2:'14:30', type:'p', nm:'타데와라 습원 / 조자바루', park:{f:1,t:'조자바루 비지터센터 무료 주차장'}, ds:'나무 데크 산책. 해발 1,000m라 아래보다 시원합니다.', c:P.tadewara},
     {drive:{dist:'12km', dur:'20분', toll:'무료', note:'가는 길에 편의점이 없습니다 — 필요한 건 미리'}},
-    {t:'15:00', type:'h', nm:'山あいの宿 喜安屋 (스지유 온천)', ds:'독채(離れ) 노천탕 딸린 8조 화모던 객실. 조·석식 포함.',
+    {t:'15:00', type:'h', nm:'山あいの宿 喜安屋 (스지유 온천)', park:{f:1,t:'숙소 주차장'}, ds:'독채(離れ) 노천탕 딸린 8조 화모던 객실. 조·석식 포함.',
       q:'山あいの宿 喜安屋 筋湯温泉', tags:[['o','1박'],['a','예약 •••'],['d','17:00까지 도착']],
       alert:'<b>체크인은 15:00부터이고 늦어도 17:00까지 도착해야 합니다.</b> 산속이라 근처에 편의점이 없으니 필요한 건 유후인에서 사두세요.', alertD:1},
     {t:'18:00', type:'m', nm:'석식 (18:00 정시 시작)', ds:'료칸 조·석식 포함. 시간이 정해져 있으니 늦지 마세요.', tags:[['w','정시']]},
@@ -700,11 +738,11 @@ const DAYS = [
     {t:'09:00', t2:'10:00', type:'p', nm:'스지유 온천마을 산책', ds:'우타세유(打たせ湯) 족욕으로 마무리. 체크아웃 전에 다녀오세요.', c:P.sujiyu},
     {t:'10:00', type:'h', nm:'喜安屋 체크아웃', q:'山あいの宿 喜安屋 筋湯温泉'},
     {drive:{dist:'15km', dur:'25분', toll:'무료', road:'현도 40호 → 국도 210호'}},
-    {t:'10:30', t2:'11:45', type:'p', nm:'고코노에 유메오츠리바시 + 구스이케이', ds:'높이 173m 보행자 전용 출렁다리. 입장료 1인 ¥500 (2명 ¥1,000).',
+    {t:'10:30', t2:'11:45', type:'p', nm:'고코노에 유메오츠리바시 + 구스이케이', park:{f:1,t:'무료 · 中村측 229대 / 北方측 46대'}, ds:'높이 173m 보행자 전용 출렁다리. 입장료 1인 ¥500 (2명 ¥1,000).',
       c:P.bridge, tags:[['w','폭염 주의']],
       alert:'다리 위엔 그늘이 없습니다. <b>모자와 물 꼭 챙기세요.</b> 오전이라 그나마 덜 덥습니다.'},
     {drive:{dist:'43km', dur:'50분', toll:'무료', road:'국도 212호 → 히타'}},
-    {t:'12:40', t2:'13:40', type:'m', nm:'점심 · 히타마부시 센야 (日田まぶし千屋)',
+    {t:'12:40', t2:'13:40', type:'m', nm:'점심 · 히타마부시 센야 (日田まぶし千屋)', park:{f:1,t:'마메다마치 주차장 전부 무료 · 豆田西 50대가 가장 가까움'},
       ds:'★4.4(2,592) · 1인 ¥3,000~4,000 · 매일 10:30~16:30 · ☎ 0973-22-3130',
       c:[33.32728,130.93733], tags:[['o','★4.4'],['a','연중무휴']],
       alert:'히타 명물 <b>장어 히츠마부시</b>. 에도시대 거리가 남아 있는 <b>마메다마치(豆田町)</b> 안이라, 식후에 15분쯤 걸어보시면 마지막 날 마무리로 좋습니다.'},
@@ -1090,6 +1128,7 @@ function renderTL(){
           (g.hidden?`<span class="tag d">숨김</span>`:'')+`</div>`+
         (it.ds?`<div class="ds">${it.ds}</div>`:'')+
         (it.alert?`<div class="alert${it.alertD?' d':''}">${it.alert}</div>`:'')+
+        (it.park?`<div class="park${it.park.f?' free':''}">🅿️ ${it.park.t}</div>`:'')+
         (it.home?`<div style="margin-top:8px;font-size:12px;color:var(--tx2)">출발 시각 <input type="time" class="tinp" value="${homeT()}"></div>`:'')+
         ((it.c||it.q)?aBtn(navUrl(it.c||it.q),'🧭 길안내'):'')+
         (it.link?aBtn(it.link.u,'📊 '+it.link.t,'margin-left:6px'):'')+
