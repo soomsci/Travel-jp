@@ -108,7 +108,7 @@ section.on{display:block}
 .wx .loc{font-size:11px;color:var(--tx3);font-weight:700}
 .hours{display:flex;gap:4px;overflow-x:auto;margin:-4px 0 12px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .hours:empty{display:none}
-.hcell{flex:none;width:46px;background:var(--card);border:1px solid var(--line);border-radius:9px;
+.hcell{flex:none;width:52px;background:var(--card);border:1px solid var(--line);border-radius:9px;
   padding:6px 2px;text-align:center;font-variant-numeric:tabular-nums}
 .hcell.now{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,transparent)}
 .hcell span{display:block;line-height:1.35}
@@ -116,6 +116,7 @@ section.on{display:block}
 .hcell .hi{font-size:15px}
 .hcell .ht{font-size:12.5px;font-weight:800}
 .hcell .hp{font-size:9.5px;color:var(--acc)}
+.hcell .hr{font-size:9.5px;color:var(--tx3);font-weight:700}
 .ev .time em{display:block;font-style:normal;font-size:10.5px;font-weight:700;color:var(--tx3);margin-top:2px}
 
 /* ── timeline ── */
@@ -1193,14 +1194,14 @@ const WMO = c =>
 let WX = null;
 
 async function loadWx(){
-  const cached = localStorage.getItem('wx');
+  const cached = localStorage.getItem('wx2');
   if(cached){ try{ const o=JSON.parse(cached); if(Date.now()-o.at < 3*3600000){ WX=o.d; renderWx(); } }catch(e){} }
   const keys = Object.keys(WX_PTS);
   const lat = keys.map(k=>WX_PTS[k][0]).join(',');
   const lon = keys.map(k=>WX_PTS[k][1]).join(',');
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`+
     `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max`+
-    `&hourly=temperature_2m,weather_code,precipitation_probability`+
+    `&hourly=temperature_2m,weather_code,precipitation_probability,precipitation`+
     `&current=temperature_2m,weather_code,relative_humidity_2m,apparent_temperature`+
     `&timezone=Asia%2FTokyo&forecast_days=16`;
   try{
@@ -1209,7 +1210,7 @@ async function loadWx(){
     const arr = Array.isArray(j) ? j : [j];
     WX = {};
     keys.forEach((k,i) => WX[k] = arr[i]);
-    localStorage.setItem('wx', JSON.stringify({at:Date.now(), d:WX}));
+    localStorage.setItem('wx2', JSON.stringify({at:Date.now(), d:WX}));
     renderWx(); renderTL();
   }catch(e){
     WXFAIL = true;
@@ -1232,6 +1233,7 @@ function wxAt(d, hhmm){
   return i==null ? null : {c:h.H.weather_code[i], t:Math.round(h.H.temperature_2m[i]),
                            p:h.H.precipitation_probability?.[i]};
 }
+const mm = v => !v ? '·' : (v<1 ? v.toFixed(1) : Math.round(v))+'mm';
 function renderWxHours(){
   const d = DAYS.find(x=>x.n===curDay), box = $('#wxHours'), h = wxHourly(d);
   if(!h){ box.innerHTML=''; return; }
@@ -1242,7 +1244,8 @@ function renderWxHours(){
     s += `<div class="hcell${hr===nowHr?' now':''}"><span class="hh">${hr}시</span>
       <span class="hi">${WMO(h.H.weather_code[i])[0]}</span>
       <span class="ht">${Math.round(h.H.temperature_2m[i])}°</span>
-      <span class="hp">${h.H.precipitation_probability?.[i] ?? '–'}%</span></div>`;
+      <span class="hp">${h.H.precipitation_probability?.[i] ?? '–'}%</span>
+      <span class="hr">${mm(h.H.precipitation?.[i])}</span></div>`;
   }
   box.innerHTML = s;
 }
