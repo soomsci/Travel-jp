@@ -246,6 +246,20 @@ svg.routemap{width:100%;height:auto;display:block;border-radius:7px}
 .eitem .ex{flex:none;background:none;border:0;color:var(--tx3);font-size:17px;cursor:pointer;padding:2px 4px}
 .empty{text-align:center;color:var(--tx3);font-size:13px;padding:24px 0}
 
+/* ── QR ── */
+.qrit{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.qrit:last-child{border-bottom:0}
+.qrit img{width:56px;height:56px;object-fit:contain;background:#fff;border-radius:8px;
+  border:1px solid var(--line);flex:none;cursor:pointer}
+.qrit .ql{flex:1;min-width:0;font-size:13.5px;font-weight:700}
+.qrit .ql small{display:block;color:var(--tx3);font-size:11px;font-weight:500}
+.qrfull{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:20px}
+.qrfull img{max-width:100%;max-height:78vh;object-fit:contain}
+.qrfull .cap{color:#111;font-size:15px;font-weight:800}
+.qrfull button{background:#111;color:#fff;border:0;border-radius:10px;padding:11px 22px;
+  font-size:15px;font-weight:800;font-family:inherit;cursor:pointer}
+
 /* ── 맛집 ── */
 .filt{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px;margin-bottom:10px;-webkit-overflow-scrolling:touch}
 .filt button{flex:none;background:var(--card);border:1px solid var(--line);border-radius:99px;
@@ -570,6 +584,20 @@ svg.routemap{width:100%;height:auto;display:block;border-radius:7px}
 
 <!-- ══════════ 정보 ══════════ -->
 <section id="s-info">
+  <div class="h2">Visit Japan Web QR</div>
+  <div class="card">
+    <div class="erow">
+      <input id="qrLabel" type="text" placeholder="이름 / 용도 (예: 민수 입국심사)">
+    </div>
+    <label class="addbtn" style="display:block;text-align:center;cursor:pointer;margin-top:9px">
+      + 캡처 이미지 추가
+      <input id="qrFile" type="file" accept="image/*" style="display:none">
+    </label>
+    <div id="qrList"></div>
+    <div class="tiny" style="margin-top:9px">이 기기에만 저장됩니다. 서버에도 저장소에도 올라가지 않고,
+    백업 코드에도 포함되지 않습니다. 기기를 바꾸면 다시 넣으셔야 합니다.</div>
+  </div>
+
   <div class="h2">숙소</div>
   <div class="card" id="hotels" style="padding:4px 13px"></div>
 
@@ -1720,6 +1748,78 @@ function renderExp(){
   });
 }
 
+/* ══════════════════ Visit Japan Web QR ══════════════════ */
+/* 여권·입국 정보가 담긴 이미지라 이 기기 localStorage에만 둔다.
+   저장소·서버·백업 코드 어디에도 나가지 않는다. */
+const getQr = () => JSON.parse(localStorage.getItem('qr')||'[]');
+const setQr = a => localStorage.setItem('qr', JSON.stringify(a));
+
+// QR은 선이 얇아 JPEG로 뭉개면 인식률이 떨어진다. PNG로 긴 변 900px까지만 줄인다.
+function shrink(file){
+  return new Promise((ok, no) => {
+    const fr = new FileReader();
+    fr.onerror = () => no(new Error('read'));
+    fr.onload = () => {
+      const im = new Image();
+      im.onerror = () => no(new Error('decode'));
+      im.onload = () => {
+        const s = Math.min(1, 900/Math.max(im.width, im.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width*s); c.height = Math.round(im.height*s);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        ok(c.toDataURL('image/png'));
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+function qrOpen(item){
+  const o = el('div','qrfull');
+  o.innerHTML = `<div class="cap">${item.label}</div><img src="${item.src}" alt="">
+                 <button>닫기</button>`;
+  o.querySelector('button').onclick = () => o.remove();
+  document.body.appendChild(o);
+}
+
+function renderQr(){
+  const a = getQr(), w = $('#qrList');
+  w.innerHTML = a.length ? '' : `<div class="empty">저장된 QR이 없습니다</div>`;
+  a.forEach(q => {
+    const row = el('div','qrit');
+    row.innerHTML = `<img src="${q.src}" alt="">
+      <span class="ql">${q.label}<small>탭하면 크게 보입니다</small></span>
+      <button class="ex" style="background:none;border:0;color:var(--tx3);font-size:17px;cursor:pointer">✕</button>`;
+    row.querySelector('img').onclick = () => qrOpen(q);
+    row.querySelector('.ex').onclick = () => {
+      if(confirm(`「${q.label}」을(를) 지울까요?`)){ setQr(getQr().filter(x=>x.id!==q.id)); renderQr(); }
+    };
+    w.appendChild(row);
+  });
+}
+
+function initQr(){
+  $('#qrFile').onchange = async e => {
+    const f = e.target.files[0];
+    if(!f) return;
+    const label = $('#qrLabel').value.trim() || `QR ${getQr().length+1}`;
+    try{
+      const src = await shrink(f);
+      const a = getQr();
+      a.push({id:Date.now()*1000+a.length, label, src});
+      setQr(a);
+      $('#qrLabel').value = '';
+      renderQr();
+    }catch(err){
+      alert('이미지를 읽지 못했습니다. 다른 파일로 시도해 주세요.');
+    }finally{
+      e.target.value = '';   // 같은 파일 다시 고를 수 있게
+    }
+  };
+  renderQr();
+}
+
 /* ══════════════════ 탭 ══════════════════ */
 document.querySelectorAll('nav button').forEach(b => {
   b.onclick = () => {
@@ -1741,7 +1841,7 @@ document.querySelectorAll('nav button').forEach(b => {
 
   syncHome();
   renderDays(); renderTL(); renderMap(); renderToll(); renderChk();
-  initExp(); initEat(); renderBudget(); renderInfo();
+  initExp(); initEat(); renderBudget(); renderInfo(); initQr();
   tick(); setInterval(tick, 20000);
   loadWx(); setInterval(loadWx, 30*60000);
 })();
